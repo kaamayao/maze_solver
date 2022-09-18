@@ -8,6 +8,8 @@ from src.core.animation import Animation
 from copy import deepcopy
 import matplotlib as matplotlib
 
+matplotlib.use('tkagg')
+
 def print_maze(maze, index=0):
     colormap = plt.cm.Set2
     normalize = matplotlib.colors.Normalize(vmin=0, vmax=5)
