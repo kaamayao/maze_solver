@@ -17,41 +17,40 @@ def main():
 
     while not exitSolver:
         event, values = window.read()
-        match event:
-            case('select_maze'):
-                maze = read_maze()
-            case('print_maze'):
-                print_maze(maze)   
-            case('a_star'):
-                clear_maze_print(maze)
-                a_star_search(maze)
-            case('depth'): 
-                clear_maze_print(maze)
-                depth_search(maze)
-            case('breadth'): 
-                clear_maze_print(maze)
-                breadth_search(maze)
-            case('depth_iterative'): 
-                clear_maze_print(maze)
-                depth_iterative_search(maze)
-            case('uniform'): 
-                clear_maze_print(maze)
-                uniform_search(maze)
-            case('greedy'): 
-                clear_maze_print(maze)
-                greedy_search(maze)
-            case("exit"):
-                exitSolver = True
-            case('update_image'):
-               update_image() 
-            case('prev_image'):
-               Animation.show_prev_frame(maze)
-            case('next_image'):
-               Animation.show_next_frame(maze)
-            case('export_gif'):
-               Animation.export_gif(maze)
-            case(sg.WIN_CLOSED): 
-                exitSolver = True
+        if event == 'select_maze':
+            maze = read_maze()
+        if event == 'print_maze':
+            print_maze(maze)   
+        if event == 'a_star':
+            clear_maze_print(maze)
+            a_star_search(maze)
+        if event == 'depth':
+            clear_maze_print(maze)
+            depth_search(maze)
+        if event == 'breadth':
+            clear_maze_print(maze)
+            breadth_search(maze)
+        if event == 'depth_iterative':
+            clear_maze_print(maze)
+            depth_iterative_search(maze)
+        if event == 'uniform':
+            clear_maze_print(maze)
+            uniform_search(maze)
+        if event == 'greedy':
+            clear_maze_print(maze)
+            greedy_search(maze)
+        if event == 'exit':
+            exitSolver = True
+        if event == 'update_image':
+           update_image() 
+        if event == 'prev_image':
+           Animation.show_prev_frame(maze)
+        if event == 'next_image':
+           Animation.show_next_frame(maze)
+        if event == 'export_gif':
+           Animation.export_gif(maze)
+        if event == sg.WIN_CLOSED:
+            exitSolver = True
 
     window.close()
 
