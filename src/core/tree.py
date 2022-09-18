@@ -1,3 +1,5 @@
+import os
+import glob
 from treelib import Node, Tree
 
 class Tree_maze:
@@ -14,7 +16,19 @@ class Tree_maze:
             return
     
     def print_tree():
+        dirname = os.path.dirname(__file__)
+        tree_files_path = os.path.join(dirname.split('/src', 1)[0], 'tree/*')
+        files = glob.glob(tree_files_path)
+        for f in files:
+            os.remove(f)
         Tree_maze.tree.save2file('tree/tree.txt')
+        Tree_maze.tree.show()
 
     def clear_tree():
         Tree_maze.tree = Tree()
+
+    def clear_generated_tree(export_tree):
+        if export_tree:
+            Tree_maze.print_tree()
+            Tree_maze.clear_tree()
+
