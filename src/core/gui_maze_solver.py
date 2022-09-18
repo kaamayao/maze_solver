@@ -20,6 +20,7 @@ def create_GUI_window():
         [
             sg.Button('<', key="prev_image"), 
             sg.Button('>', key="next_image"),
+            sg.Button('Exportar GIF', key="export_gif"),
         ]
     ],expand_x=True, expand_y=True)
 

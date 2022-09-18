@@ -48,8 +48,8 @@ def main():
                Animation.show_prev_frame(maze)
             case('next_image'):
                Animation.show_next_frame(maze)
-            case('play'):
-               Animation.play(maze)
+            case('export_gif'):
+               Animation.export_gif(maze)
             case(sg.WIN_CLOSED): 
                 exitSolver = True
 
