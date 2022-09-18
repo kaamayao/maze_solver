@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import PySimpleGUI as sg
 from src.core.gui_maze_solver import window 
 from src.core.graph import get_node_coordinates, get_node_number
+from src.core.animation import Animation
 from copy import deepcopy
 import matplotlib as matplotlib
 
@@ -29,11 +30,11 @@ def get_maze_step(maze, reached, frontier):
     return n_maze
 
 def clear_maze_print(maze):
+    Animation.clear_frame_count()
     dirname = os.path.dirname(__file__)
-    image_path = os.path.join(dirname.split('/src', 1)[0], 'images/')
+    image_path = os.path.join(dirname.split('/src', 1)[0], 'images/*')
     files = glob.glob(image_path)
     for f in files:
-        print(f)
-
-    print('image_path ',image_path )
+        os.remove(f)
+    print_maze(maze)
     

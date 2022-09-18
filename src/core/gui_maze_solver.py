@@ -1,3 +1,4 @@
+import time
 import PySimpleGUI as sg
 
 def create_GUI_window():
@@ -12,14 +13,13 @@ def create_GUI_window():
             [sg.Button('Búsqueda greedy', key='greedy')],
             [sg.Button('A*', key='a_star')],
         ])],
-        [sg.Button('Print Maze', key="print_maze")],
+        [sg.Button('Imprimir laberinto', key="print_maze")],
         [sg.Button('Exit', key="exit")]])
     image_column = sg.Column([
         [sg.Image('images/maze0.png', key="maze-img")],
         [
             sg.Button('<', key="prev_image"), 
             sg.Button('>', key="next_image"),
-            sg.Button('Play', key="play")
         ]
     ],expand_x=True, expand_y=True)
 
