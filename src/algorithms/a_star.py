@@ -6,7 +6,7 @@ from src.core.utils import find_node
 import math
 
 
-def a_star(maze):
+def a_star_search(maze):
 
 
     export_tree = len(maze) <= 6

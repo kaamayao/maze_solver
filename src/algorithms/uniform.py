@@ -10,7 +10,7 @@ from src.core.utils import find_node
 import math
 
 
-def uniform(maze):
+def uniform_search(maze):
 
 
     export_tree = len(maze) <= 6
