@@ -1,5 +1,6 @@
 import os
 import glob
+import posixpath as path
 import matplotlib.pyplot as plt
 import PySimpleGUI as sg
 from src.core.gui_maze_solver import window 
@@ -33,14 +34,8 @@ def get_maze_step(maze, reached, frontier):
 
 def clear_maze_print(maze):
     Animation.clear_frame_count()
-    dirname = os.path.dirname(__file__)
-    image_path = os.path.join(dirname.split('/src', 1)[0], 'images/*')
-    if(platform == 'Windows') {
-        image_path = os.path.join(dirname.split('\\src', 1)[0], 'images/*')
-    }
-    else {
-        image_path = os.path.join(dirname.split('/src', 1)[0], 'images/*')
-    }
+    dirname = path.dirname(__file__)
+    image_path = path.join(dirname.split('/src', 1)[0], 'images/*')
     files = glob.glob(image_path)
     for f in files:
         os.remove(f)

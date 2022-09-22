@@ -34,7 +34,9 @@ def greedy_search(maze):
         Tree_maze.add_root(1)
 
     objective_node = get_node_number(maze,len(maze)  - 1 ,len(maze[0])-2)
+    
     cordinates_objetive = get_node_coordinates(maze,objective_node)
+    
     frontier = deque([cur_node])
     reached = [cur_node]
 
@@ -44,7 +46,7 @@ def greedy_search(maze):
     while frontier:
         
         cur_node = frontier.pop()
-        children = expand_node(maze, cur_node)
+        children = expand_node(maze, cur_node) #[2,3,4]
         
         if(len(children)>0):
             
@@ -52,8 +54,8 @@ def greedy_search(maze):
             for child in children:
                 
                 cordenada = get_node_coordinates(maze,child) #calcula la coordenada
-                value = sum(list(map(lambda x,y: math.sqrt(x-y) , cordenada, cordinates_objetive))) #calcula la distancia manhattan
-                child_values[child] = value 
+                value = sum(list(map(lambda x,y: math.abs(x-y) , cordenada, cordinates_objetive))) #calcula la distancia manhattan
+                child_values[child] = value # agrega al diccionario los hijos con sus respectivas distancias Manhattan
                 
                 if export_tree:
                     Tree_maze.add_node(child, cur_node)

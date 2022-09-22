@@ -1,6 +1,7 @@
 import os
 import glob
 from treelib import Node, Tree
+import posixpath as path
 
 class Tree_maze:
     root = None
@@ -16,15 +17,8 @@ class Tree_maze:
             return
     
     def print_tree():
-        dirname = os.path.dirname(__file__)
-        tree_files_path = ''
-        if(platform == 'Windows') {
-            tree_files_path = os.path.join(dirname.split('\\src', 1)[0], 'tree/*')
-        }
-        else {
-            tree_files_path = os.path.join(dirname.split('/src', 1)[0], 'tree/*')
-        }
-
+        dirname = path.dirname(__file__)
+        tree_files_path = path.join(dirname.split('\\src', 1)[0], 'tree/*')    
         files = glob.glob(tree_files_path)
         for f in files:
             os.remove(f)

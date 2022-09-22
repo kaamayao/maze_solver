@@ -1,6 +1,7 @@
 import os
 import glob
 import time
+import posixpath as path
 from src.core.gui_maze_solver import update_image
 from PIL import Image
 import re
@@ -15,14 +16,8 @@ class Animation:
                 for text in re.split(_nsre, s)]   
 
     def get_frame_count():
-        dirname = os.path.dirname(__file__)
-        image_path = os.path.join(dirname.split('/src', 1)[0], 'images/*')
-        if(platform == 'Windows') {
-            image_path = os.path.join(dirname.split('\\src', 1)[0], 'images/*')
-        }
-        else {
-            image_path = os.path.join(dirname.split('/src', 1)[0], 'images/*')
-        }
+        dirname = path.dirname(__file__)
+        image_path = path.join(dirname.split('/src', 1)[0], 'images/*')
         files = glob.glob(image_path)
         return len(files)
 
@@ -42,8 +37,8 @@ class Animation:
             append_images=frames,save_all=True, duration=(len(maze)*50), loop=0)
 
     def export_gif(maze):
-        dirname = os.path.dirname(__file__)
-        image_path = os.path.join(dirname.split('/src', 1)[0], 'images/*')
+        dirname = path.dirname(__file__)
+        image_path = path.join(dirname.split('/src', 1)[0], 'images/*')
         Animation.make_gif(maze, image_path)
 
     def clear_frame_count():
