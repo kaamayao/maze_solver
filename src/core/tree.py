@@ -17,7 +17,14 @@ class Tree_maze:
     
     def print_tree():
         dirname = os.path.dirname(__file__)
-        tree_files_path = os.path.join(dirname.split('/src', 1)[0], 'tree/*')
+        tree_files_path = ''
+        if(platform == 'Windows') {
+            tree_files_path = os.path.join(dirname.split('\\src', 1)[0], 'tree/*')
+        }
+        else {
+            tree_files_path = os.path.join(dirname.split('/src', 1)[0], 'tree/*')
+        }
+
         files = glob.glob(tree_files_path)
         for f in files:
             os.remove(f)

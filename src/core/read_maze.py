@@ -27,7 +27,14 @@ def read_maze():
 
 def read_maze_default():
     dirname = os.path.dirname(__file__)
-    default_path_img = os.path.join(dirname.split('/src', 1)[0], 'data/maze_5x5.csv')
+    platform = platform.system()
+    default_path_img = ''
+    if(platform == 'Windows') {
+        default_path_img = os.path.join(dirname.split('\\src', 1)[0], 'data\\maze_5x5.csv')
+    }
+    else {
+        default_path_img = os.path.join(dirname.split('/src', 1)[0], 'data/maze_5x5.csv')
+    }
     return create_maze_matrix(default_path_img)
 
 def __init__(self,name,roll):

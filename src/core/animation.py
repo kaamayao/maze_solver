@@ -17,6 +17,12 @@ class Animation:
     def get_frame_count():
         dirname = os.path.dirname(__file__)
         image_path = os.path.join(dirname.split('/src', 1)[0], 'images/*')
+        if(platform == 'Windows') {
+            image_path = os.path.join(dirname.split('\\src', 1)[0], 'images/*')
+        }
+        else {
+            image_path = os.path.join(dirname.split('/src', 1)[0], 'images/*')
+        }
         files = glob.glob(image_path)
         return len(files)
 
