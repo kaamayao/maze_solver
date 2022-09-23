@@ -23,7 +23,7 @@ def depth_iterative_search(maze):
     if(cur_node == objective_node): 
         return cur_node
     
-    jump = 5 #que tan profundo quiero que escarbe
+    jump = 3 #que tan profundo quiero que escarbe
     nodes_values = {}
     nodes_values[cur_node] = 0 #Esto me dará la altura del nodo
     hight = 0
@@ -57,9 +57,17 @@ def depth_iterative_search(maze):
                     else:
                         frontier.appendleft(child)
         
-        if min(nodes_values, key=nodes_values.get) == hight :
+                else:
+                    nodes_values.pop(child)
+
+            nodes_values.pop(cur_node)
+
+            #print(nodes_values)
+        #print(nodes_values[min(nodes_values, key=nodes_values.get)])
+        if nodes_values[min(nodes_values, key=nodes_values.get)] == hight+1 :
             hight += jump
-                        
+    
+        #print(hight)
 
         print_maze(get_maze_step(maze, reached, list(frontier)), index_maze_step)
 
