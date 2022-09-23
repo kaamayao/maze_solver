@@ -35,13 +35,15 @@ def a_star_search(maze):
         children = expand_node(maze, cur_node)
         
         if(len(children)>0):
+
+            cordenadaP= get_node_coordinates(maze,cur_node)
+            h_padre = sum(list(map(lambda x,y: math.sqrt(x-y) , cordenadaP, cordinates_objetive)))
+            c_padre= child_values[cur_node] - h_padre
     
             for child in children:
                 
-                cordenadaP= get_node_coordinates(maze,cur_node)
-                cordenadaS = get_node_coordinates(maze,child) #calcula la coordenada
-                h_padre = sum(list(map(lambda x,y: math.sqrt(x-y) , cordenadaP, cordinates_objetive)))
-                c = child_values[cur_node] - h_padre
+                cordenadaS = get_node_coordinates(maze,child) #calcula la coordenada del hijo
+                c = c_padre + 1 #cálcula el costo de llegar hasta el hijo
                 h = sum(list(map(lambda x,y: math.sqrt(x-y) , cordenadaS, cordinates_objetive))) #calcula la distancia manhattan
                 child_values[child] = h + c
                 
