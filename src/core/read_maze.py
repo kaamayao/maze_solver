@@ -2,6 +2,7 @@ import os
 import csv
 import tkinter
 from tkinter import filedialog
+import posixpath as path
 
 def create_maze_matrix(path):
     res_maze_matrix = []
@@ -26,8 +27,8 @@ def read_maze():
     return create_maze_matrix(folder_path)
 
 def read_maze_default():
-    dirname = os.path.dirname(__file__)
-    default_path_img = os.path.join(dirname.split('/src', 1)[0], 'data/maze_5x5.csv')
+    dirname = path.dirname(__file__)
+    default_path_img = path.join(dirname.split('/src', 1)[0], 'data/maze_5x5.csv')
     return create_maze_matrix(default_path_img)
 
 def __init__(self,name,roll):

@@ -1,12 +1,3 @@
-'''
-    Todos los nodos de la grafica son numerados de esta forma:
-
-    |1|2|3| 
-    |4|5|6| 
-    |7|8|9| 
-
-    el valor del nodo es guardado como NodeNumber
-'''
 #Usa esto para la estructura de datos de cola y fila, NUNCA usen queue
 from collections import deque
 #expand_node: dado un nodo y el laberinto les regresa los vecinos 
