@@ -54,7 +54,7 @@ def greedy_search(maze):
             for child in children:
                 
                 cordenada = get_node_coordinates(maze,child) #calcula la coordenada
-                value = sum(list(map(lambda x,y: math.abs(x-y) , cordenada, cordinates_objetive))) #calcula la distancia manhattan
+                value = sum(list(map(lambda x,y: abs(x-y) , cordenada, cordinates_objetive))) #calcula la distancia manhattan
                 child_values[child] = value # agrega al diccionario los hijos con sus respectivas distancias Manhattan
                 
                 if export_tree:
@@ -73,9 +73,10 @@ def greedy_search(maze):
                     
                 
             next_node = min(child_values, key=child_values.get) #encuentro el nodo con distancia manhattan mas chiki
-                
-            frontier.remove(next_node) #elimino el elemento con menor valor para agregarlo en ultima posicion para que sea el siguiente a explorar
-            frontier.append(next_node)
+            
+            if next_node in frontier:
+                frontier.remove(next_node) #elimino el elemento con menor valor para agregarlo en ultima posicion para que sea el siguiente a explorar
+                frontier.append(next_node)
         
         print_maze(get_maze_step(maze, reached, list(frontier)), index_maze_step)
         # Incrementar el indice usado para imprimir archivos en maze(i).png
