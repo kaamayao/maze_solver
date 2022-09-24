@@ -14,8 +14,6 @@ def a_star_search(maze):
     index_maze_step = 1
    
     cur_node = 1
-    child_values = {}
-    child_values[cur_node]=0
     
     if export_tree:
         
@@ -26,8 +24,14 @@ def a_star_search(maze):
     frontier = deque([cur_node])
     reached = [cur_node]
 
+
     if(cur_node == objective_node): 
         return cur_node
+
+    child_values = {}
+    cordenadaP= get_node_coordinates(maze,cur_node)
+    h_padre = sum(list(map(lambda x,y: abs(x-y) , cordenadaP, cordinates_objetive)))
+    child_values[cur_node]=h_padre
     
     while frontier:
         
@@ -37,14 +41,14 @@ def a_star_search(maze):
         if(len(children)>0):
 
             cordenadaP= get_node_coordinates(maze,cur_node)
-            h_padre = sum(list(map(lambda x,y: math.sqrt(x-y) , cordenadaP, cordinates_objetive)))
+            h_padre = sum(list(map(lambda x,y: abs(x-y) , cordenadaP, cordinates_objetive)))
             c_padre= child_values[cur_node] - h_padre
     
             for child in children:
                 
                 cordenadaS = get_node_coordinates(maze,child) #calcula la coordenada del hijo
                 c = c_padre + 1 #cálcula el costo de llegar hasta el hijo
-                h = sum(list(map(lambda x,y: math.sqrt(x-y) , cordenadaS, cordinates_objetive))) #calcula la distancia manhattan
+                h = sum(list(map(lambda x,y: abs(x-y) , cordenadaS, cordinates_objetive))) #calcula la distancia manhattan
                 child_values[child] = h + c
                 
                 if export_tree:
@@ -56,6 +60,9 @@ def a_star_search(maze):
                     reached.append(child)
                     print_maze(get_maze_step(maze, reached, list(frontier)), index_maze_step)
                     return child 
+
+                if find_node(reached, child): 
+                    del child_values[child]
                 
                 if not find_node(reached, child): 
                     reached.append(child)

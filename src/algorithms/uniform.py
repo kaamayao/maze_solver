@@ -55,15 +55,18 @@ def uniform_search(maze):
                     print_maze(get_maze_step(maze, reached, list(frontier)), index_maze_step)
                     return child 
                 
+                if find_node(reached, child): 
+                    del child_values[child]
+
                 if not find_node(reached, child): 
                     reached.append(child)
                     frontier.append(child)
+                
             
             del child_values[cur_node] #elimina el valor del padre
-                    
-                
+            
             next_node = min(child_values, key=child_values.get) #encuentro el nodo con distancia manhattan mas chiki
-                
+
             frontier.remove(next_node) #elimino el elemento con menor valor para agregarlo en ultima posicion para que sea el siguiente a explorar
             frontier.append(next_node)
         
