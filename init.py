@@ -1,4 +1,5 @@
 import PySimpleGUI as sg
+import tracemalloc
 from src.core.read_maze import read_maze, read_maze_default
 from src.core.gui_maze_solver import window, update_image
 from src.core.print_maze import print_maze, clear_maze_print
@@ -10,6 +11,8 @@ from src.algorithms.depth_iterative import depth_iterative_search
 from src.algorithms.greedy import greedy_search
 from src.algorithms.uniform import uniform_search
 
+
+
 def main():
     maze = read_maze_default()
     print_maze(maze)
@@ -18,27 +21,50 @@ def main():
     while not exitSolver:
         event, values = window.read()
         if event == 'select_maze':
+
             maze = read_maze()
+            
         if event == 'print_maze':
+            
             print_maze(maze)   
         if event == 'a_star':
+            tracemalloc.start() #comienza a ver cuanto cuesta
+            
             clear_maze_print(maze)
             a_star_search(maze)
-        if event == 'depth':
-            clear_maze_print(maze)
+            
+            print(f'La memoria utilizada fue: {tracemalloc.get_traced_memory()[1]} MiB') #imprime despues de ejecutar el algoritmo cuanto costó hasta este momento
+            tracemalloc.stop() #cierra el conteo
+        if event == 'depth': 
+            tracemalloc.start()
+            clear_maze_print(maze) 
             depth_search(maze)
+            print(f'La memoria utilizada fue: {tracemalloc.get_traced_memory()[1]} MiB') #imprime despues de ejecutar el algoritmo cuanto costó hasta este momento
+            tracemalloc.stop()  
         if event == 'breadth':
+            tracemalloc.start() 
             clear_maze_print(maze)
             breadth_search(maze)
+            print(f'La memoria utilizada fue: {tracemalloc.get_traced_memory()[1]} MiB') #imprime despues de ejecutar el algoritmo cuanto costó hasta este momento
+            tracemalloc.stop() 
         if event == 'depth_iterative':
+            tracemalloc.start() 
             clear_maze_print(maze)
             depth_iterative_search(maze)
+            print(f'La memoria utilizada fue: {tracemalloc.get_traced_memory()[1]} MiB') #imprime despues de ejecutar el algoritmo cuanto costó hasta este momento
+            tracemalloc.stop() 
         if event == 'uniform':
+            tracemalloc.start()
             clear_maze_print(maze)
             uniform_search(maze)
+            print(f'La memoria utilizada fue: {tracemalloc.get_traced_memory()[1]} MiB') #imprime despues de ejecutar el algoritmo cuanto costó hasta este momento
+            tracemalloc.stop() 
         if event == 'greedy':
+            tracemalloc.start()
             clear_maze_print(maze)
             greedy_search(maze)
+            print(f'La memoria utilizada fue: {tracemalloc.get_traced_memory()[1]} MiB') #imprime despues de ejecutar el algoritmo cuanto costó hasta este momento
+            tracemalloc.stop() 
         if event == 'exit':
             exitSolver = True
         if event == 'update_image':
@@ -55,3 +81,4 @@ def main():
     window.close()
 
 main()
+

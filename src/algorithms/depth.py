@@ -14,6 +14,8 @@ from src.core.tree import Tree_maze
 #   Dado un vector y un nodo regresa True si se encuentra el nodo en es vector y False de lo contrario
 from src.core.utils import find_node
 
+
+
 def depth_search(maze):
     # Solo se exporta el arbol para cuadriculas de 6x6 o menos (de acuerdo a specs)
     export_tree = len(maze) <= 6

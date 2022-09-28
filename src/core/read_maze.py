@@ -28,7 +28,7 @@ def read_maze():
 
 def read_maze_default():
     dirname = path.dirname(__file__)
-    default_path_img = path.join(dirname.split('/src', 1)[0], 'data/maze_10x10.csv')
+    default_path_img = path.join(dirname.split('/src', 1)[0], 'data/maze_5x5.csv') #aca cambio el tamaño
     return create_maze_matrix(default_path_img)
 
 def __init__(self,name,roll):
