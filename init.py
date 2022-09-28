@@ -1,5 +1,6 @@
 import PySimpleGUI as sg
 import tracemalloc
+import time
 from src.core.read_maze import read_maze, read_maze_default
 from src.core.gui_maze_solver import window, update_image
 from src.core.print_maze import print_maze, clear_maze_print
@@ -29,42 +30,83 @@ def main():
             print_maze(maze)   
         if event == 'a_star':
             tracemalloc.start() #comienza a ver cuanto cuesta
-            
+            st = time.process_time() # get the start time
             clear_maze_print(maze)
             a_star_search(maze)
             
             print(f'La memoria utilizada fue: {tracemalloc.get_traced_memory()[1]} MiB') #imprime despues de ejecutar el algoritmo cuanto costó hasta este momento
             tracemalloc.stop() #cierra el conteo
+            # get the end time
+            et = time.process_time()
+
+            # get execution time
+            res = et - st
+            print('El tiempo de CPU utilizado fue:', res, 'segundos')
         if event == 'depth': 
             tracemalloc.start()
+            st = time.process_time() # get the start time
             clear_maze_print(maze) 
             depth_search(maze)
             print(f'La memoria utilizada fue: {tracemalloc.get_traced_memory()[1]} MiB') #imprime despues de ejecutar el algoritmo cuanto costó hasta este momento
-            tracemalloc.stop()  
+            tracemalloc.stop() 
+            # get the end time
+            et = time.process_time()
+
+            # get execution time
+            res = et - st
+            print('El tiempo de CPU utilizado fue:', res, 'segundos')
         if event == 'breadth':
-            tracemalloc.start() 
+            tracemalloc.start()
+            st = time.process_time() # get the start time
             clear_maze_print(maze)
             breadth_search(maze)
             print(f'La memoria utilizada fue: {tracemalloc.get_traced_memory()[1]} MiB') #imprime despues de ejecutar el algoritmo cuanto costó hasta este momento
             tracemalloc.stop() 
+            # get the end time
+            et = time.process_time()
+
+            # get execution time
+            res = et - st
+            print('El tiempo de CPU utilizado fue:', res, 'segundos')
         if event == 'depth_iterative':
             tracemalloc.start() 
+            st = time.process_time() # get the start time
             clear_maze_print(maze)
             depth_iterative_search(maze)
             print(f'La memoria utilizada fue: {tracemalloc.get_traced_memory()[1]} MiB') #imprime despues de ejecutar el algoritmo cuanto costó hasta este momento
             tracemalloc.stop() 
+            # get the end time
+            et = time.process_time()
+
+            # get execution time
+            res = et - st
+            print('El tiempo de CPU utilizado fue:', res, 'segundos')
         if event == 'uniform':
             tracemalloc.start()
+            st = time.process_time() # get the start time
             clear_maze_print(maze)
             uniform_search(maze)
             print(f'La memoria utilizada fue: {tracemalloc.get_traced_memory()[1]} MiB') #imprime despues de ejecutar el algoritmo cuanto costó hasta este momento
             tracemalloc.stop() 
+             # get the end time
+            et = time.process_time()
+
+            # get execution time
+            res = et - st
+            print('El tiempo de CPU utilizado fue:', res, 'segundos')
         if event == 'greedy':
             tracemalloc.start()
+            st = time.process_time() # get the start time
             clear_maze_print(maze)
             greedy_search(maze)
             print(f'La memoria utilizada fue: {tracemalloc.get_traced_memory()[1]} MiB') #imprime despues de ejecutar el algoritmo cuanto costó hasta este momento
             tracemalloc.stop() 
+            # get the end time
+            et = time.process_time()
+
+            # get execution time
+            res = et - st
+            print('El tiempo de CPU utilizado fue:', res, 'segundos')
         if event == 'exit':
             exitSolver = True
         if event == 'update_image':
