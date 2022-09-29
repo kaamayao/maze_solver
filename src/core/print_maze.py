@@ -13,13 +13,13 @@ matplotlib.use('tkagg')
 
 def print_maze(maze, index=0):
     colormap = plt.cm.Set2
-    normalize = matplotlib.colors.Normalize(vmin=0, vmax=5)
+    normalize = matplotlib.colors.Normalize(vmin=0, vmax=6)
     plt.imshow(maze, cmap=colormap, norm=normalize)
     plt.axis('off') 
     plt.savefig('./images/maze%i.png'%index)
     window.write_event_value("update_image", None)
 
-def get_maze_step(maze, reached, frontier):
+def get_maze_step(maze, reached, frontier, path=None):
     n_maze = deepcopy(maze)
     sentinel = object()
     for node in reached:
@@ -29,6 +29,11 @@ def get_maze_step(maze, reached, frontier):
     for node in frontier:
         i,j = get_node_coordinates(maze, node)
         n_maze[i][j] = 3
+
+    if path is not None: 
+        for node in path:
+            i,j = get_node_coordinates(maze, node)
+            n_maze[i][j] = 5
         
     return n_maze
 

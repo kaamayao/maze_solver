@@ -71,4 +71,5 @@ def depth_search(maze):
         index_maze_step+=1
     # En caso de no encontrar el nodo objetivo sobreescribir el archivo tree.tx 
     # si y solo export_tree es True
+
     Tree_maze.clear_generated_tree(export_tree)
