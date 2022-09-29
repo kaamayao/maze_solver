@@ -8,29 +8,37 @@ def breadth_search(maze):
     export_tree = len(maze) <= 6
     index_maze_step = 1
     step = 1;
-    cur_node = 1
+    cur_path = [1]
     if export_tree:
         Tree_maze.add_root(1)
     objective_node = get_node_number(maze,len(maze) - 1 ,len(maze[0])-2)
-    frontier = deque([cur_node])
-    reached = [cur_node]
-    if(cur_node == objective_node): 
-        return cur_node
+    frontier = deque([cur_path])
+    node_frontier = deque([cur_path[-1]])
+    reached  = cur_path
+    reached_paths = [cur_path]
+    if(cur_path[-1] == objective_node):
+        return cur_path
     while frontier:
-        cur_node = frontier.pop()
-        children = expand_node(maze, cur_node)
+        cur_path = frontier.pop()
+        node_frontier.pop()
+        children = expand_node(maze, cur_path[-1])
         if(len(children)>0):
-            for child in children: 
+            for child in children:
+                child_path = cur_path + [child]
                 if export_tree:
-                    Tree_maze.add_node(child, cur_node)
+                    Tree_maze.add_node(child, cur_path[-1])
                 if(child == objective_node):
                     Tree_maze.clear_generated_tree(export_tree)
                     reached.append(child)
-                    print_maze(get_maze_step(maze, reached, list(frontier)), index_maze_step)
-                    return child 
+                    reached_paths.append(child_path)
+                    print_maze(get_maze_step(maze, reached, list(frontier),child_path), index_maze_step)
+                    return child_path
                 if not find_node(reached, child): 
+                    reached_paths.append(child_path)
                     reached.append(child)
-                    frontier.appendleft(child)
-        print_maze(get_maze_step(maze, reached, list(frontier)), index_maze_step)
+                    reached_paths.append(child_path)
+                    frontier.appendleft(child_path)
+                    node_frontier.appendleft(child)
+        print_maze(get_maze_step(maze, reached, list(node_frontier)), index_maze_step)
         index_maze_step+=1
     Tree_maze.clear_generated_tree(export_tree)
