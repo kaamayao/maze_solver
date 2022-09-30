@@ -10,18 +10,21 @@ def depth_iterative_search(maze):
    
     export_tree = len(maze) <= 6
     index_maze_step = 1
-    cur_node = 1
+    cur_path = [1]
+    cur_node=1
     
     
     if export_tree:    
         Tree_maze.add_root(1)
         
     objective_node = get_node_number(maze,len(maze) - 1 ,len(maze[0])-2)
-    frontier = deque([cur_node])
-    reached = [cur_node]
+    frontier = deque([cur_path])
+    node_frontier = deque([cur_path[-1]])
+    reached  = cur_path
+    reached_paths = [cur_path]
     
-    if(cur_node == objective_node): 
-        return cur_node
+    if(cur_path == objective_node): 
+        return cur_path
     
     jump = 3 #que tan profundo quiero que escarbe
     nodes_values = {}
@@ -30,12 +33,14 @@ def depth_iterative_search(maze):
     
     while frontier:
        
-        cur_node = frontier.pop()
-        children = expand_node(maze, cur_node)
+        cur_path = frontier.pop()
+        cur_node = cur_path[-1]
+        node_frontier.pop()
+        children = expand_node(maze, cur_path[-1])
 
         if(len(children)>0):
             for child in children:
-                
+                child_path = cur_path + [child]
                 nodes_values[child] = nodes_values[cur_node] + 1 
                  
                 if export_tree:
@@ -44,18 +49,20 @@ def depth_iterative_search(maze):
                 if(child == objective_node):
                     
                     Tree_maze.clear_generated_tree(export_tree)
-                    
                     reached.append(child)
-                    
-                    print_maze(get_maze_step(maze, reached, list(frontier)), index_maze_step)
-                    return child 
+                    reached_paths.append(child_path)
+                    print_maze(get_maze_step(maze, reached, list(node_frontier),child_path), index_maze_step)
+                    return child_path
                 
-                if not find_node(reached, child): 
+                if not find_node(reached, child):
+                    reached_paths.append(child_path)
                     reached.append(child)
                     if nodes_values[child] <= hight :
-                        frontier.append(child)
+                        node_frontier.append(child)
+                        frontier.append(child_path)
                     else:
-                        frontier.appendleft(child)
+                        frontier.appendleft(child_path)
+                        node_frontier.appendleft(child)
         
                 else:
                     nodes_values.pop(child)
@@ -69,7 +76,7 @@ def depth_iterative_search(maze):
     
         #print(hight)
 
-        print_maze(get_maze_step(maze, reached, list(frontier)), index_maze_step)
+        print_maze(get_maze_step(maze, reached, list(node_frontier)), index_maze_step)
 
         index_maze_step+=1
         

@@ -31,12 +31,11 @@ def breadth_search(maze):
                     Tree_maze.clear_generated_tree(export_tree)
                     reached.append(child)
                     reached_paths.append(child_path)
-                    print_maze(get_maze_step(maze, reached, list(frontier),child_path), index_maze_step)
+                    print_maze(get_maze_step(maze, reached, list(node_frontier),child_path), index_maze_step)
                     return child_path
                 if not find_node(reached, child): 
                     reached_paths.append(child_path)
                     reached.append(child)
-                    reached_paths.append(child_path)
                     frontier.appendleft(child_path)
                     node_frontier.appendleft(child)
         print_maze(get_maze_step(maze, reached, list(node_frontier)), index_maze_step)
