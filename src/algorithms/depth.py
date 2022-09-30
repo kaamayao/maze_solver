@@ -23,6 +23,7 @@ def depth_search(maze):
     index_maze_step = 1
     # Nodo actual, todos los laberintos empieza en el nodo (0,1) el cual es el nodeNumber 1
     cur_node = 1
+    cur_path = [1]
     # Se ejecuta solo si se debe exportar el arbol
     if export_tree:
         # Agrega el nodo 1 como la raiz (Siempre agregar esto al inicio 
@@ -31,42 +32,43 @@ def depth_search(maze):
     # El nodo objetivo siempre es el penultimo de la cuadricula, este paso regresa el nodeNumber
     objective_node = get_node_number(maze,len(maze) - 1 ,len(maze[0])-2)
     # La frontera del algoritmo. SIEMPRE usar deque
-    frontier = deque([cur_node])
-    # Los nodos que ya han sido visitados
-    reached = [cur_node]
+    frontier = deque([cur_path])
+    node_frontier = deque([cur_path[-1]])
+    reached  = cur_path
+    reached_paths = [cur_path]
     # Si el nodo actual es el objetivo regresar el actual. Ya estamos en el objetivo
     if(cur_node == objective_node): 
-        return cur_node
+        return cur_path
     # Si la frontera esta vacia entonces todavia hay nodos no expandidos
     while frontier:
         # Explorar el ultimo nodo agregado
-        cur_node = frontier.pop()
-        # Expandir ese nodo, esta funcion regresa un arreglo con los numeros de estos
-        children = expand_node(maze, cur_node)
+        cur_path = frontier.pop()
+        node_frontier.pop()
+        children = expand_node(maze, cur_path[-1])
         # Explorar los hijos del nodo expandidos solamente si existen
         if(len(children)>0):
             # Examinar todos los hijos del nodo cur_node
             for child in children: 
                 # Si se debe exportar un arbol entonces agregar el nodo actual 
                 # como hijo de cur_node en el arbol
+                child_path = cur_path + [child]
                 if export_tree:
                     Tree_maze.add_node(child, cur_node)
                 # Si el hijo es el nodo objetivo entonces SIEMPRE:
                 if(child == objective_node):
-                    #Limpiar el arbol generado, esto escribe nuestro archivo en tree.txt 
-                    #sobreescribiendo sus contenidos con el arbol generado
                     Tree_maze.clear_generated_tree(export_tree)
-                    #Colocar a este nodo en la lista de los visitados
                     reached.append(child)
-                    #Imprimir este paso en el archivo maze(i).png
-                    print_maze(get_maze_step(maze, reached, list(frontier)), index_maze_step)
-                    return child 
+                    reached_paths.append(child_path)
+                    print_maze(get_maze_step(maze, reached, list(node_frontier),child_path), index_maze_step)
+                    return child_path
                 # Si este nodo no ha sido visitado colocarlo en la frontera y en los nodos ya visitados
                 if not find_node(reached, child): 
+                    reached_paths.append(child_path)
                     reached.append(child)
-                    frontier.append(child)
+                    frontier.append(child_path)
+                    node_frontier.append(child)
         # Imprimir esta paso en archivo maze(i).png
-        print_maze(get_maze_step(maze, reached, list(frontier)), index_maze_step)
+        print_maze(get_maze_step(maze, reached, list(node_frontier)), index_maze_step)
         # Incrementar el indice usado para imprimir archivos en maze(i).png
         index_maze_step+=1
     # En caso de no encontrar el nodo objetivo sobreescribir el archivo tree.tx 

@@ -13,7 +13,7 @@ def a_star_search(maze):
     
     index_maze_step = 1
    
-    cur_node = 1
+    cur_path = [1]
     
     if export_tree:
         
@@ -21,31 +21,35 @@ def a_star_search(maze):
 
     objective_node = get_node_number(maze,len(maze)  - 1 ,len(maze[0])-2)
     cordinates_objetive = get_node_coordinates(maze,objective_node)
-    frontier = deque([cur_node])
-    reached = [cur_node]
+    frontier = deque([cur_path])
+    node_frontier = deque([cur_path[-1]])
+    reached  = cur_path
+    reached_paths = [cur_path]
 
 
-    if(cur_node == objective_node): 
-        return cur_node
+    if(cur_path[-1] == objective_node): 
+        return cur_path
 
     child_values = {}
-    cordenadaP= get_node_coordinates(maze,cur_node)
+    cordenadaP= get_node_coordinates(maze,cur_path[-1])
     h_padre = sum(list(map(lambda x,y: abs(x-y) , cordenadaP, cordinates_objetive)))
-    child_values[cur_node]=h_padre
+    child_values[cur_path[-1]]=h_padre
     
     while frontier:
         
-        cur_node = frontier.pop()
-        children = expand_node(maze, cur_node)
+        cur_path = frontier.pop()
+        cur_node = cur_path[-1]
+        node_frontier.pop()
+        children = expand_node(maze, cur_path[-1])
         
         if(len(children)>0):
 
-            cordenadaP= get_node_coordinates(maze,cur_node)
+            cordenadaP= get_node_coordinates(maze,cur_path[-1])
             h_padre = sum(list(map(lambda x,y: abs(x-y) , cordenadaP, cordinates_objetive)))
-            c_padre= child_values[cur_node] - h_padre
+            c_padre= child_values[cur_path[-1]] - h_padre
     
             for child in children:
-                
+                child_path = cur_path + [child]
                 cordenadaS = get_node_coordinates(maze,child) #calcula la coordenada del hijo
                 c = c_padre + 1 #cálcula el costo de llegar hasta el hijo
                 h = sum(list(map(lambda x,y: abs(x-y) , cordenadaS, cordinates_objetive))) #calcula la distancia manhattan
@@ -55,28 +59,33 @@ def a_star_search(maze):
                     Tree_maze.add_node(child, cur_node)
 
                 if(child == objective_node):
-                   
                     Tree_maze.clear_generated_tree(export_tree)
                     reached.append(child)
-                    print_maze(get_maze_step(maze, reached, list(frontier)), index_maze_step)
-                    return child 
+                    reached_paths.append(child_path)
+                    print_maze(get_maze_step(maze, reached, list(node_frontier),child_path), index_maze_step)
+                    return child_path
 
                 if find_node(reached, child): 
                     del child_values[child]
                 
                 if not find_node(reached, child): 
                     reached.append(child)
-                    frontier.append(child)
-            
+                    reached_paths.append(child_path)
+                    frontier.appendleft(child_path)
+                    node_frontier.appendleft(child)
             del child_values[cur_node] #elimina el valor del padre
-                    
-                
             next_node = min(child_values, key=child_values.get) #encuentro el nodo con distancia manhattan mas chiki
                 
-            frontier.remove(next_node) #elimino el elemento con menor valor para agregarlo en ultima posicion para que sea el siguiente a explorar
-            frontier.append(next_node)
+            node_frontier.remove(next_node) #elimino el elemento con menor valor para agregarlo en ultima posicion para que sea el siguiente a explorar
+            node_frontier.append(next_node)
+            frontier_copy=frontier.copy()
+            for path in frontier_copy:
+                last_of_path=path[-1]
+                if last_of_path==next_node:
+                    frontier.remove(path) #elimino el elemento con menor valor para agregarlo en ultima posicion para que sea el siguiente a explorar
+                    frontier.append(path)
         
-        print_maze(get_maze_step(maze, reached, list(frontier)), index_maze_step)
+        print_maze(get_maze_step(maze, reached, list(node_frontier)), index_maze_step)
         # Incrementar el indice usado para imprimir archivos en maze(i).png
         index_maze_step+=1
     # En caso de no encontrar el nodo objetivo sobreescribir el archivo tree.tx 

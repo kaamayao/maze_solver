@@ -18,6 +18,7 @@ def uniform_search(maze):
     index_maze_step = 1
    
     cur_node = 1
+    cur_path = [1]
     child_values = {}
     child_values[cur_node]=0
     
@@ -25,24 +26,26 @@ def uniform_search(maze):
         
         Tree_maze.add_root(1)
 
-    objective_node = get_node_number(maze,len(maze)  - 1 ,len(maze[0])-2)
-    cordinates_objetive = get_node_coordinates(maze,objective_node)
-    frontier = deque([cur_node])
-    reached = [cur_node]
-
+    objective_node = get_node_number(maze,len(maze) - 1 ,len(maze[0])-2)
+    frontier = deque([cur_path])
+    node_frontier = deque([cur_path[-1]])
+    reached  = cur_path
+    reached_paths = [cur_path]
     if(cur_node == objective_node): 
-        return cur_node
+        return cur_path
+    i=0
     
     while frontier:
-        
-        cur_node = frontier.pop()
-        children = expand_node(maze, cur_node)
+        cur_path = frontier.pop()
+        cur_node = cur_path[-1]
+        node_frontier.pop()
+        children = expand_node(maze, cur_path[-1])
         
         if(len(children)>0):
     
             for child in children:
-                
-                value= child_values[cur_node] + 1 #le suma 1 al costo del padre para obtener el costo de cada uno de los hijos
+                child_path = cur_path + [child]
+                value = child_values[cur_path[-1]] + 1 #le suma 1 al costo del padre para obtener el costo de cada uno de los hijos
                 child_values[child] = value 
                 
                 if export_tree:
@@ -52,25 +55,32 @@ def uniform_search(maze):
                    
                     Tree_maze.clear_generated_tree(export_tree)
                     reached.append(child)
-                    print_maze(get_maze_step(maze, reached, list(frontier)), index_maze_step)
-                    return child 
+                    reached_paths.append(child_path)
+                    print_maze(get_maze_step(maze, reached, list(node_frontier),child_path), index_maze_step)
+                    return child_path
                 
                 if find_node(reached, child): 
                     del child_values[child]
 
                 if not find_node(reached, child): 
+                    reached_paths.append(child_path)
                     reached.append(child)
-                    frontier.append(child)
-                
-            
+                    frontier.append(child_path)
+                    node_frontier.append(child)
             del child_values[cur_node] #elimina el valor del padre
-            
+
             next_node = min(child_values, key=child_values.get) #encuentro el nodo con distancia manhattan mas chiki
 
-            frontier.remove(next_node) #elimino el elemento con menor valor para agregarlo en ultima posicion para que sea el siguiente a explorar
-            frontier.append(next_node)
+            node_frontier.remove(next_node) #elimino el elemento con menor valor para agregarlo en ultima posicion para que sea el siguiente a explorar
+            node_frontier.append(next_node)
+            frontier_copy=frontier.copy()
+            for path in frontier_copy:
+                last_of_path=path[-1]
+                if last_of_path==next_node:
+                    frontier.remove(path) #elimino el elemento con menor valor para agregarlo en ultima posicion para que sea el siguiente a explorar
+                    frontier.append(path)
         
-        print_maze(get_maze_step(maze, reached, list(frontier)), index_maze_step)
+        print_maze(get_maze_step(maze, reached, list(node_frontier)), index_maze_step)
         # Incrementar el indice usado para imprimir archivos en maze(i).png
         index_maze_step+=1
     # En caso de no encontrar el nodo objetivo sobreescribir el archivo tree.tx 
