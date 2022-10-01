@@ -3,21 +3,31 @@ import glob
 import posixpath as path
 import matplotlib.pyplot as plt
 import PySimpleGUI as sg
+import matplotlib as matplotlib
+import multiprocessing
 from src.core.gui_maze_solver import window 
 from src.core.graph import get_node_coordinates, get_node_number
 from src.core.animation import Animation
 from copy import deepcopy
-import matplotlib as matplotlib
+from threading import Thread
 
 matplotlib.use('tkagg')
+colormap = plt.cm.Set2
+normalize = matplotlib.colors.Normalize(vmin=0, vmax=6)
+plt.axis('off') 
 
 def print_maze(maze, index=0):
-    colormap = plt.cm.Set2
-    normalize = matplotlib.colors.Normalize(vmin=0, vmax=6)
+    if index == 0:
+        plt.imshow(maze, cmap=colormap, norm=normalize)
+        plt.savefig('./images/maze%i.png'%index)
+        window.write_event_value("update_image", None)
+        return
+    save_image_process = multiprocessing.Process(target=save_img, args=(maze, index) )
+    save_image_process.start()
+
+def save_img(maze, index=0):
     plt.imshow(maze, cmap=colormap, norm=normalize)
-    plt.axis('off') 
     plt.savefig('./images/maze%i.png'%index)
-    window.write_event_value("update_image", None)
 
 def get_maze_step(maze, reached, frontier, path=None):
     n_maze = deepcopy(maze)
