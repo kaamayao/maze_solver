@@ -9,21 +9,21 @@ from src.core.gui_maze_solver import window
 from src.core.graph import get_node_coordinates, get_node_number
 from src.core.animation import Animation
 from copy import deepcopy
-from concurrent.futures import ThreadPoolExecutor
+import multiprocessing as mp
+import os
 
-executor = ThreadPoolExecutor(max_workers=os.cpu_count() - 1)
-matplotlib.use('tkagg')
+matplotlib.use('GTK4agg')
 colormap = plt.cm.Set2
 normalize = matplotlib.colors.Normalize(vmin=0, vmax=6)
 plt.axis('off') 
 
-def save_img(maze, index=0):
+def save_maze(maze, index=0):
     plt.imshow(maze, cmap=colormap, norm=normalize)
     plt.savefig('./images/maze%i.png'%index)
 
 def print_maze(maze, index=0):
-    plt.imshow(maze, cmap=colormap, norm=normalize)
-    plt.savefig('./images/maze%i.png'%index)
+    pool = mp.Pool()
+    pool.apply_async(save_maze, args = (maze, index))
 
 def get_maze_step(maze, reached, frontier, path=None):
     n_maze = deepcopy(maze)
