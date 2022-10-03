@@ -12,7 +12,7 @@ from copy import deepcopy
 import multiprocessing as mp
 import os
 
-matplotlib.use('GTK4agg')
+matplotlib.use('Qt5Agg')
 colormap = plt.cm.Set2
 normalize = matplotlib.colors.Normalize(vmin=0, vmax=6)
 plt.axis('off') 
