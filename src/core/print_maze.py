@@ -18,8 +18,11 @@ normalize = matplotlib.colors.Normalize(vmin=0, vmax=6)
 plt.axis('off') 
 
 def save_maze(maze, index=0):
-    plt.imshow(maze, cmap=colormap, norm=normalize)
-    plt.savefig('./images/maze%i.png'%index)
+    try:
+        plt.imshow(maze, cmap=colormap, norm=normalize)
+        plt.savefig('./images/maze%i.png'%index)
+    except Exception:
+        pass 
 
 def print_maze(maze, index=0):
     pool = mp.Pool()
