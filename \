@@ -9,7 +9,10 @@ from src.core.gui_maze_solver import window
 from src.core.graph import get_node_coordinates, get_node_number
 from src.core.animation import Animation
 from copy import deepcopy
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import TimeoutError, ThreadPoolExecutor
+from PIL import Image
+import numpy as np
+import matplotlib.pyplot as plt
 
 executor = ThreadPoolExecutor(max_workers=os.cpu_count() - 1)
 matplotlib.use('tkagg')
@@ -17,13 +20,18 @@ colormap = plt.cm.Set2
 normalize = matplotlib.colors.Normalize(vmin=0, vmax=6)
 plt.axis('off') 
 
-def save_img(maze, index=0):
-    plt.imshow(maze, cmap=colormap, norm=normalize)
-    plt.savefig('./images/maze%i.png'%index)
+def save_img(plt, index):
+    plt.savefig('./images/maze%i.jpg'%index)
 
 def print_maze(maze, index=0):
-    plt.imshow(maze, cmap=colormap, norm=normalize)
-    plt.savefig('./images/maze%i.png'%index)
+    if index <= 1:
+        plt.imshow(maze, cmap=colormap, norm=normalize)
+        plt.savefig('./images/maze%i.jpg'%index)
+        return
+    
+    cm = plt.get_cmap('viridis')
+    img = Image.fromarray(maze).astype(np.uint8))
+    img.save('maze%i.jpg'%index)
 
 def get_maze_step(maze, reached, frontier, path=None):
     n_maze = deepcopy(maze)

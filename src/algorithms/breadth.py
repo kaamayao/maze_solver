@@ -3,8 +3,10 @@ from src.core.graph import expand_node, get_node_number
 from src.core.print_maze import get_maze_step, print_maze
 from src.core.tree import Tree_maze
 from src.core.utils import find_node
+import multiprocessing as mp
 
 def breadth_search(maze):
+    pool = mp.Pool()
     export_tree = len(maze) <= 6
     index_maze_step = 1
     step = 1;
@@ -38,6 +40,6 @@ def breadth_search(maze):
                     reached.append(child)
                     frontier.appendleft(child_path)
                     node_frontier.appendleft(child)
-        print_maze(get_maze_step(maze, reached, list(node_frontier)), index_maze_step)
+        pool.apply_async(print_maze, args = (get_maze_step(maze, reached, list(node_frontier)), index_maze_step))
         index_maze_step+=1
     Tree_maze.clear_generated_tree(export_tree)
