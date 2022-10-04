@@ -30,10 +30,12 @@ def a_star_search(maze):
     if(cur_path[-1] == objective_node): 
         return cur_path
 
-    child_values = {}
+    child_values1 = {}
+    child_values2 = {}
     cordenadaP= get_node_coordinates(maze,cur_path[-1])
     h_padre = sum(list(map(lambda x,y: abs(x-y) , cordenadaP, cordinates_objetive)))
-    child_values[cur_path[-1]]=h_padre
+    child_values1[cur_path[-1]]=h_padre
+    child_values2[cur_path[-1]]=0
     
     while frontier:
         
@@ -45,15 +47,15 @@ def a_star_search(maze):
         if(len(children)>0):
 
             cordenadaP= get_node_coordinates(maze,cur_path[-1])
-            h_padre = sum(list(map(lambda x,y: abs(x-y) , cordenadaP, cordinates_objetive)))
-            c_padre= child_values[cur_path[-1]] - h_padre
+            c_padre= child_values2[cur_path[-1]] 
     
             for child in children:
                 child_path = cur_path + [child]
                 cordenadaS = get_node_coordinates(maze,child) #calcula la coordenada del hijo
                 c = c_padre + 1 #cálcula el costo de llegar hasta el hijo
                 h = sum(list(map(lambda x,y: abs(x-y) , cordenadaS, cordinates_objetive))) #calcula la distancia manhattan
-                child_values[child] = h + c
+                child_values1[child] = h + c
+                child_values2[child] = c
                 
                 if export_tree:
                     Tree_maze.add_node(child, cur_node)
@@ -66,15 +68,15 @@ def a_star_search(maze):
                     return child_path
 
                 if find_node(reached, child): 
-                    del child_values[child]
+                    del child_values1[child]
                 
                 if not find_node(reached, child): 
                     reached.append(child)
                     reached_paths.append(child_path)
                     frontier.appendleft(child_path)
                     node_frontier.appendleft(child)
-            del child_values[cur_node] #elimina el valor del padre
-            next_node = min(child_values, key=child_values.get) #encuentro el nodo con distancia manhattan mas chiki
+            del child_values1[cur_node] #elimina el valor del padre
+            next_node = min(child_values1, key=child_values1.get) #encuentro el nodo con distancia manhattan mas chiki
                 
             node_frontier.remove(next_node) #elimino el elemento con menor valor para agregarlo en ultima posicion para que sea el siguiente a explorar
             node_frontier.append(next_node)
