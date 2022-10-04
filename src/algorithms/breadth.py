@@ -5,10 +5,8 @@ from src.core.tree import Tree_maze
 from src.core.utils import find_node
 
 def breadth_search(maze):
-    pool = mp.Pool()
     export_tree = len(maze) <= 6
     index_maze_step = 1
-    step = 1;
     cur_path = [1]
     if export_tree:
         Tree_maze.add_root(1)

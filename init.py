@@ -12,8 +12,6 @@ from src.algorithms.depth_iterative import depth_iterative_search
 from src.algorithms.greedy import greedy_search
 from src.algorithms.uniform import uniform_search
 
-
-
 def main():
     maze = read_maze_default()
     print_maze(maze)

@@ -12,7 +12,7 @@ from copy import deepcopy
 import multiprocessing as mp
 import os
 
-matplotlib.use('Qt5Agg')
+matplotlib.use('tkAgg')
 colormap = plt.cm.Set2
 normalize = matplotlib.colors.Normalize(vmin=0, vmax=6)
 plt.axis('off') 
@@ -25,7 +25,9 @@ def save_maze(maze, index=0):
         pass 
 
 def print_maze(maze, index=0):
-    pool = mp.Pool()
+    # Cambiar a mp.Pool() para max eficiencia. 
+    # mp.Pool(4) se mantiene por razones de compatibilidad
+    pool = mp.Pool(4)
     pool.apply_async(save_maze, args = (maze, index))
 
 def get_maze_step(maze, reached, frontier, path=None):
