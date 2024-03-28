@@ -26,6 +26,8 @@ def uniform_search(maze):
         
         Tree_maze.add_root(1)
 
+
+#goal
     objective_node = get_node_number(maze,len(maze) - 1 ,len(maze[0])-2)
     frontier = deque([cur_path])
     node_frontier = deque([cur_path[-1]])
